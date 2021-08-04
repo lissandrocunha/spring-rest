@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import io.springrestapi.SpringRestApiApplication;
 import io.springrestapi.domain.model.Cozinha;
+import io.springrestapi.domain.repository.CozinhaRepository;
 
 public class ExclusaoCozinhaMain {
 
@@ -13,12 +14,12 @@ public class ExclusaoCozinhaMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(SpringRestApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
 		Cozinha cozinha = new Cozinha();
 		cozinha.setId(1L);
 		
-		cadastroCozinha.remover(cozinha);
+		cozinhaRepository.remover(cozinha);
 		
 		System.out.printf("%d - %s\n", cozinha.getId(), cozinha.getNome());
 		
