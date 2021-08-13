@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.springrestapi.api.model.CozinhasXmlWrapper;
+import io.springrestapi.domain.exception.EntidadeEmUsoException;
+import io.springrestapi.domain.exception.EntidadeNaoEncontradaExcption;
 import io.springrestapi.domain.model.Cozinha;
 import io.springrestapi.domain.repository.CozinhaRepository;
+import io.springrestapi.domain.service.CadastroCozinhaService;
 
 @Controller
 @RequestMapping(value = "/cozinhas")
@@ -28,6 +32,9 @@ public class CozinhaController {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
+
+	@Autowired
+	private CadastroCozinhaService cadastroCozinha;
 
 	@GetMapping
 	public List<Cozinha> listar() {
@@ -52,8 +59,8 @@ public class CozinhaController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void adicionar(@RequestBody Cozinha cozinha) {
-		cozinhaRepository.salvar(cozinha);
+	public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+		return cadastroCozinha.salvar(cozinha);
 
 	}
 
@@ -70,6 +77,18 @@ public class CozinhaController {
 		cozinhaAtual = cozinhaRepository.salvar(cozinhaAtual);
 
 		return ResponseEntity.ok(cozinhaAtual);
+	}
+
+	@DeleteMapping("/{cozinhaId}")
+	public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId) {
+		try {
+			cadastroCozinha.excluir(cozinhaId);
+			return ResponseEntity.noContent().build();
+		} catch (EntidadeNaoEncontradaExcption e) {
+			return ResponseEntity.notFound().build();
+		} catch (EntidadeEmUsoException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 	}
 
 }
