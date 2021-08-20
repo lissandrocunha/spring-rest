@@ -8,11 +8,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import io.springrestapi.domain.model.Restaurante;
 import io.springrestapi.domain.repository.RestauranteRepository;
 
-@Component
+@Repository
 public class RestauranteRepositoryImpl implements RestauranteRepository {
 
 	@PersistenceContext
