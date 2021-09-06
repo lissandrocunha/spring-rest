@@ -14,8 +14,7 @@ import io.springrestapi.domain.model.Cozinha;
 import io.springrestapi.domain.model.Restaurante;
 import io.springrestapi.domain.repository.CozinhaRepository;
 import io.springrestapi.domain.repository.RestauranteRepository;
-import io.springrestapi.infrastructure.repository.especification.RestauranteComFreteGratisSpecification;
-import io.springrestapi.infrastructure.repository.especification.RestauranteComNomeSemelhante;
+import io.springrestapi.infrastructure.repository.especification.RestauranteSpecs;
 
 @RestController
 @RequestMapping("/teste")
@@ -76,10 +75,7 @@ public class TesteController {
 	@GetMapping("/restaurantes/com-frete-gratis")
 	public List<Restaurante> restaurantesComFreteGratis(String nome) {
 		
-		var comFreteGratis = new RestauranteComFreteGratisSpecification();
-		var comNomeSemelhante = new RestauranteComNomeSemelhante(nome);
-		
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+		return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis());
 
 	}
 
