@@ -14,7 +14,7 @@ import io.springrestapi.domain.model.Restaurante;
 
 @Repository
 public interface RestauranteRepository
-		extends JpaRepository<Restaurante, Long>, JpaSpecificationExecutor<Restaurante>, RestaurantesRepositoryQueries {
+		extends CustomJpaRepository<Restaurante, Long>, JpaSpecificationExecutor<Restaurante>, RestaurantesRepositoryQueries {
 
 	List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
