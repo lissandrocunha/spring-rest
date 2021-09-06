@@ -11,7 +11,7 @@ import io.springrestapi.domain.model.Cozinha;
 @Repository
 public interface CozinhaRepository extends JpaRepository<Cozinha, Long>  {
 
-	List<Cozinha> findCozinhasByNome(String nome);
+	List<Cozinha> findCozinhasByNomeContaining(String nome);
 
 	Optional<Cozinha> findByNome(String nome);
 }
