@@ -12,17 +12,25 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import io.springrestapi.domain.model.Restaurante;
+import io.springrestapi.domain.repository.RestauranteRepository;
 import io.springrestapi.domain.repository.RestaurantesRepositoryQueries;
+import io.springrestapi.infrastructure.repository.especification.RestauranteSpecs;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestaurantesRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager manager;
+
+	@Autowired
+	@Lazy
+	private RestauranteRepository restauranteRepository;
 
 	@Override
 	public List<Restaurante> consultar(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
@@ -49,6 +57,12 @@ public class RestauranteRepositoryImpl implements RestaurantesRepositoryQueries 
 		TypedQuery<Restaurante> query = manager.createQuery(criteria);
 
 		return query.getResultList();
+	}
+
+	@Override
+	public List<Restaurante> findComFreteGratis(String nome) {
+		return restauranteRepository
+				.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
 	}
 
 }
