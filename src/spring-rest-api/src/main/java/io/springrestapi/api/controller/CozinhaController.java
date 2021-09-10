@@ -73,7 +73,7 @@ public class CozinhaController {
 				return ResponseEntity.notFound().build();
 			}
 
-			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id");
+			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id", "formasPagmaneto");
 			Cozinha cozinhaSalva = cadastroCozinha.salvar(cozinhaAtual.get());
 
 			return ResponseEntity.ok(cozinhaSalva);
